@@ -1,0 +1,41 @@
+{% extends 'mainapp/base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}
+Sign Up
+{% endblock %}
+{% block body %}
+
+
+        <div class="container">
+        <div class="row mt-5 pt-3">
+            <div class="col-sm-6 mx-auto">
+                <div class="card shadow my-3">
+                    <div class="card-body">
+                        <h3 class="text-center">Sign Up </h3>
+                        <hr>
+                        <form method="POST" action="{% url 'signup' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                                {{ form | crispy }}
+
+
+                            <div class="text-center m-3">
+                             <input class="btn btn-outline-primary" type="submit" value="Sign Up">
+
+                            </div>
+
+
+
+                        </form>
+<hr>
+                          <div class="text-center m-2">
+                            Already have an Account,
+                            <a class="text" href="/login"> Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

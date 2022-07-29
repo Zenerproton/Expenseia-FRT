@@ -1,0 +1,104 @@
+{% extends 'mainapp/base.html' %}
+{% block title %}
+Home
+{% endblock %}
+{% block body %}
+
+
+    <div class="container">
+        <div class="title text-center m-2 p-2">
+            <h2>Add Transactions</h2>
+        </div>
+        <div class="card shadow m-2">
+            <div class="card-body ">
+                <div class="row p-2">
+
+                <form action="{% url 'credit' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-3">
+                            <input placeholder="Amount" class="form form-control" type="number" name="amount" required>
+                        </div>
+                        <div class="col-3">
+                            <input placeholder="Description" class="form form-control" type="text" name="description" required>
+                        </div>
+                        <div class="col-3">
+                            <input placeholder="Date" class="form form-control" type="date" name="date" required>
+                        </div>
+                        <div class="col-3">
+                            <button class="btn btn-success" type="submit">Credit</button>
+                        </div>
+                     </div>
+                 </form>
+                </div>
+
+                <div class="row p-2">
+                    <form action="{% url 'debit' %}" method="post" >
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-3">
+                                <input placeholder="Amount" class="form form-control" type="number" name="amount" required>
+                            </div>
+                            <div class="col-3">
+                                <input placeholder="Description" class="form form-control" type="text" name="description" required>
+                            </div>
+                            <div class="col-3">
+                                <input placeholder="Date" class="form form-control" type="date" name="date" required>
+                            </div>
+                            <div class="col-3">
+                                <button class="btn btn-warning" type="submit"> Debit </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+                <div class="row mt-5 pt-3zz">
+                    <div class="col-sm-6 mx-auto">
+                        <div class="card shadow my-3">
+                            <div class="card-body">
+                                <h3 class="text-center">
+                                  <strong>Balance: </strong><span style="color: blue">{{ balance }}</span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+        <table class="table table-hover table-bordered table-responsive">
+            <thead class="table-secondary">
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Description</th>
+                <th scope="col">Debit</th>
+                <th scope="col">Credit</th>
+                <th scope="col">Balance</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for transaction, previous_balance in transactions %}
+                <tr>
+                    <th scope="row">{{ transaction.date }}</th>
+                    <td>{{ transaction.description }}</td>
+                    {% if transaction.transaction_type == 'debit' %}
+                        <td style="color: red;">{{ transaction.amount }}</td>
+                        <td></td>
+                    {% else %}
+                        <td></td>
+                        <td style="color: darkgreen;">{{ transaction.amount }}</td>
+                    {% endif %}
+                    <td>{{ previous_balance }}</td>
+                    <td>
+                        <a href="{% url 'delete' transaction.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
